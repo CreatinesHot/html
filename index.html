@@ -1,1 +1,75 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Starry Night</title>
+    <style>
+        /* CSS styles */
+        body {
+            margin: 0;
+            overflow: hidden; /* Prevent scrollbars */
+            background: linear-gradient(to bottom, #000428, #004e92); /* Night sky gradient */
+        }
+
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starryNight"></canvas>
+    <script>
+        // JavaScript for starry night background
+        const canvas = document.getElementById('starryNight');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const stars = [];
+        const shootingStars = [];
+        const numStars = 200;
+
+        // Create stars
+        for (let i = 0; i < numStars; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2 + 0.5,
+                speed: Math.random() * 0.5 + 0.1,
+            });
+        }
+
+        // Draw and animate stars
+        function drawStars() {
+            for (const star of stars) {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'white';
+                ctx.fill();
+
+                // Simulate twinkling
+                star.radius += (Math.random() - 0.5) * 0.05;
+                star.radius = Math.max(0.5, Math.min(star.radius, 2));
+            }
+        }
+
+        // Create a shooting star
+        canvas.addEventListener('click', (e) => {
+            shootingStars.push({
+                x: e.clientX,
+                y: e.clientY,
+                dx: Math.random() * 4 - 2,
+                dy: Math.random() * -4 - 2,
+                length: Math.random() * 20 + 10,
+            });
+        });
+
+        // Draw shooting stars
+        function drawShootingStars() {
+            for (let i = 0; i < shootingStars.length; i++) {
+                const star = shootingStars[i]
